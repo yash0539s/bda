@@ -1,0 +1,27 @@
+import pandas as pd
+import sqlite3
+
+# --- Main Pipeline ---
+df = pd.read_csv("forestfires.csv")
+conn = sqlite3.connect("forestfires.db")
+df.to_sql("forestfires", conn, if_exists="replace", index=False)
+
+# Average Temperature per Month
+avg_temp = df.groupby("Month")["Temperature_Celsius"].mean()
+print("\n🌡️ Average Temperature per Month:\n", avg_temp)
+
+# Top 5 Months with Largest Fire Area
+top_fire = df.groupby("Month")["Burned_Area_hectares"].mean().nlargest(5)
+print("\n🔥 Top 5 Months with Largest Fire Area:\n", top_fire)
+
+# Correlation between Temperature and Burned Area
+corr = df["Temperature_Celsius"].corr(df["Burned_Area_hectares"])
+print(f"\n📊 Correlation between Temperature and Fire Area: {corr:.2f}")
+
+# SQL Query: Average Burned Area by Month
+sql_res = pd.read_sql_query(
+    "SELECT Month, AVG(Burned_Area_hectares) AS avg_area "
+    "FROM forestfires GROUP BY Month ORDER BY avg_area DESC;", conn)
+print("\n🧾 Average Burned Area by Month (SQL):\n", sql_res)
+
+print("\n✅ Forest Fire Analysis Completed Successfully")
