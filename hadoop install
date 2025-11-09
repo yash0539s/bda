@@ -30,3 +30,16 @@ mapper site
   </property>
 </configuration>
 
+yarn site
+<configuration>
+
+ <property>
+    <name>yarn.nodemanager.aux-services</name>
+    <value>mapreduce_shuffle</value>
+  </property>
+ <property>
+    <name>yarn.nodemanager.auxservices.map_reduce.shuffle.class</name>
+    <value>org.apache.hadoop.mapred.shuffleHandler</value>
+  </property>
+
+</configuration>
