@@ -1,0 +1,136 @@
+. 1D (Linear) Data Visualization
+
+Purpose: Show distribution of a single variable.
+
+Example: Distribution of age
+
+Steps in Tableau:
+
+Connect to the Adult dataset in Tableau.
+
+Drag age to Columns.
+
+Drag Number of Records to Rows.
+
+Change Marks type to Bar or Histogram.
+
+Right-click age → Create → Bins to adjust bin size if needed.
+
+✅ Shows how many individuals fall into different age ranges.
+
+b. 2D (Planar) Data Visualization
+
+Purpose: Show relationship between two variables.
+
+Example: age vs hours-per-week
+
+Steps:
+
+Drag age to Columns.
+
+Drag hours-per-week to Rows.
+
+Change Marks to Circle (Scatterplot).
+
+Drag income to Color to differentiate <=50K and >50K.
+
+✅ Helps visualize if older people work more or less per week and how income is distributed.
+
+c. 3D (Volumetric) Data Visualization
+
+Purpose: Represent three numeric variables.
+
+Example: age, hours-per-week, capital-gain
+
+Steps (using color or size as the third dimension):
+
+Drag age → Columns, hours-per-week → Rows.
+
+Change Marks → Circle.
+
+Drag capital-gain → Size or Color.
+
+Optional: drag income → Color for categorical distinction.
+
+✅ This simulates a 3D view since Tableau doesn’t natively support 3D plots.
+
+d. Temporal Data Visualization
+
+Purpose: Show trends over time.
+
+Note: Adult dataset doesn’t have a real time variable, but we can use age as a pseudo-temporal variable to show trends.
+
+Example: Average hours-per-week by age
+
+Steps:
+
+Drag age → Columns.
+
+Drag AVG(hours-per-week) → Rows.
+
+Change Marks → Line.
+
+Optionally, drag income → Color to see differences.
+
+✅ Shows how work hours change with age for different income groups.
+
+e. Multidimensional Data Visualization
+
+Purpose: Show multiple variables at once.
+
+Example: age, hours-per-week, capital-gain, income
+
+Steps:
+
+Drag age → Columns, hours-per-week → Rows.
+
+Change Marks → Circle.
+
+Drag capital-gain → Size.
+
+Drag income → Color.
+
+✅ Enables exploration of multiple dimensions in one chart.
+
+f. Tree / Hierarchical Data Visualization
+
+Purpose: Show hierarchical relationships.
+
+Example: education → occupation → income
+
+Steps:
+
+Drag education → Columns.
+
+Drag occupation → Rows.
+
+Drag Number of Records → Size.
+
+Drag income → Color.
+
+Change Marks → Treemap.
+
+✅ Visualizes which occupations dominate per education level and income group.
+
+g. Network Data Visualization
+
+Purpose: Show connections between categories.
+
+Example: Connections between workclass and occupation
+
+Steps:
+
+Create a nodes/edges table from the dataset:
+
+Source: workclass
+Target: occupation
+Weight: count of records
+
+
+Connect this table to Tableau.
+
+Use Path/Line chart or a Network Graph extension.
+
+Map Weight → line thickness or color.
+
+✅ Shows which workclasses are most connected to which occupations.
