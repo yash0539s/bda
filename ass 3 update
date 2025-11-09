@@ -1,0 +1,65 @@
+mapper.py
+#!/usr/bin/env python3
+import sys
+for line in sys.stdin:
+    user, time, action = line.strip().split()
+    print(f"{user}\t{action}|{time}")
+
+📄 reducer.py
+#!/usr/bin/env python3
+import sys
+from datetime import datetime
+
+def to_dt(t): return datetime.fromisoformat(t)
+
+user, times = None, []
+for line in sys.stdin:
+    u, val = line.strip().split("\t")
+    act, t = val.split("|")
+    if user and u != user:
+        total = sum((b - a).total_seconds() for a, b in zip(times[::2], times[1::2]))
+        print(f"{user}\t{int(total)}")
+        times = []
+    user = u
+    times.append(to_dt(t))
+if user:
+    total = sum((b - a).total_seconds() for a, b in zip(times[::2], times[1::2]))
+    print(f"{user}\t{int(total)}")
+
+🧠 Step 2. Put input file into HDFS
+
+Open Command Prompt and run:
+
+hdfs dfs -mkdir -p /user/hduser/logs
+hdfs dfs -put D:\hadoop_project\log.txt /user/hduser/logs/
+
+
+(Replace hduser with your Hadoop username if different.)
+
+⚙️ Step 3. Run Hadoop streaming job
+
+Run this full command in CMD (adjust path if needed):
+
+hadoop jar %HADOOP_HOME%\share\hadoop\tools\lib\hadoop-streaming-*.jar ^
+ -input /user/hduser/logs/log.txt ^
+ -output /user/hduser/logs/out ^
+ -mapper "python mapper.py" ^
+ -reducer "python reducer.py" ^
+ -file D:\hadoop_project\mapper.py ^
+ -file D:\hadoop_project\reducer.py
+
+
+👉 Note:
+
+The -file option uploads your scripts to the Hadoop cluster.
+
+^ continues the command on the next line in Windows CMD.
+
+📊 Step 4. View results
+hdfs dfs -cat /user/hduser/logs/out/part-*
+
+
+You should see something like:
+
+alice   7200
+bob     5400
