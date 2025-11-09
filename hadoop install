@@ -1,3 +1,4 @@
+coresite
 <configuration>
   <property>
     <name>fs.defaultFS</name>
@@ -5,7 +6,7 @@
   </property>
 </configuration>
 
-
+hdfs site
 <configuration>
   <property>
     <name>dfs.replication</name>
@@ -20,3 +21,12 @@
     <value>file:///C:/hadoop/data/datanode</value>
   </property>
 </configuration>
+
+mapper site
+<configuration>
+  <property>
+    <name>mapreduce.framework.name</name>
+    <value>yarn</value>
+  </property>
+</configuration>
+
