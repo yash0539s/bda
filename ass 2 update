@@ -63,3 +63,6 @@ You should see something like:
 
 alice   7200
 bob     5400
+
+4: Show user with maximum login time
+hdfs dfs -cat /user/Yash/logs/out/part-* | sort /R /+8
