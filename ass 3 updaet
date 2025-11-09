@@ -1,0 +1,88 @@
+We'll use Hadoop Streaming to run Python scripts as MapReduce jobs.
+
+forest_mapper.py (Mapper)
+#!/usr/bin/env python3
+import sys
+import csv
+
+# read CSV from stdin
+for line in sys.stdin:
+    line = line.strip()
+    if line:
+        data = line.split(',')
+        month = data[2]   # example: month column
+        area = data[12]   # example: burned area
+        print(f"{month}\t{area}")
+
+forest_reducer.py (Reducer)
+#!/usr/bin/env python3
+import sys
+
+current_month = None
+total_area = 0
+
+for line in sys.stdin:
+    month, area = line.strip().split('\t')
+    area = float(area)
+    if current_month == month:
+        total_area += area
+    else:
+        if current_month:
+            print(f"{current_month}\t{total_area}")
+        current_month = month
+        total_area = area
+
+if current_month:
+    print(f"{current_month}\t{total_area}")
+
+Run MapReduce
+hadoop fs -put forestfires.csv /user/hduser/forestfires.csv
+
+hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-*.jar \
+ -input /user/hduser/forestfires.csv \
+ -output /user/hduser/output \
+ -mapper forest_mapper.py \
+ -reducer forest_reducer.py \
+ -file forest_mapper.py \
+ -file forest_reducer.py
+
+
+Output: Total burned area per month.
+
+3️⃣ Hive Data Mining (Simple Queries)
+Step 1: Create Hive Table
+CREATE TABLE forestfires (
+    X INT,
+    Y INT,
+    month STRING,
+    day STRING,
+    FFMC FLOAT,
+    DMC FLOAT,
+    DC FLOAT,
+    ISI FLOAT,
+    temp FLOAT,
+    RH FLOAT,
+    wind FLOAT,
+    rain FLOAT,
+    area FLOAT
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
+
+LOAD DATA INPATH '/user/hduser/forestfires.csv' INTO TABLE forestfires;
+
+Step 2: Hive Queries
+
+Total burned area per month
+
+SELECT month, SUM(area) as total_area
+FROM forestfires
+GROUP BY month;
+
+
+Average temperature per month
+
+SELECT month, AVG(temp) as avg_temp
+FROM forestfires
+GROUP BY month;
