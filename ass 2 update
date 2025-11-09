@@ -66,3 +66,46 @@ bob     5400
 
 4: Show user with maximum login time
 hdfs dfs -cat /user/Yash/logs/out/part-* | sort /R /+8
+
+
+
+---------------------------------
+Check HDFS root
+
+See what exists in HDFS:
+
+hdfs dfs -ls /
+
+
+If /user/hduser doesn’t exist, create it first:
+
+hdfs dfs -mkdir /user/hduser
+
+3️⃣ Create project folder in HDFS
+hdfs dfs -mkdir -p /user/hduser/haapo_project
+
+
+-p ensures parent directories are created if they don’t exist.
+
+Check it:
+
+hdfs dfs -ls /user/hduser/
+
+
+You should see haapo_project folder.
+
+4️⃣ Upload the CSV
+
+Make sure forestfires.csv exists in your local project folder. Then:
+
+hdfs dfs -put forestfires.csv /user/hduser/haapo_project/
+
+
+Check if it worked:
+
+hdfs dfs -ls /user/hduser/haapo_project/
+
+
+You should see:
+
+forestfires.csv
